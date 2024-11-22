@@ -1,0 +1,48 @@
+<mat-card class="max-w-lg mx-auto mt-10 p-6">
+    <form [formGroup]="translateForm" (ngSubmit)="onTranslate()" class="space-y-4">
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Animal Text</mat-label>
+        <textarea matInput formControlName="animalText" class="w-full"></textarea>
+        @if (translateForm.get('animalText')?.hasError('required')) {
+          <mat-error>
+            Animal text is required.
+          </mat-error>
+        }
+      </mat-form-field>
+  
+      <div class="flex items-center space-x-4">
+        <mat-form-field appearance="fill" class="flex-1">
+          <mat-label>van</mat-label>
+          <mat-select formControlName="originalLanguage">
+            @for (language of languages; track language) {
+              <mat-option [value]="language">
+                {{ language }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill" class="flex-1">
+          <mat-label>naar</mat-label>
+          <mat-select formControlName="translateLanguage">
+            @for (language of availableTranslationLanguages; track language) {
+              <mat-option [value]="language">
+                {{ language }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+  
+        <button mat-raised-button color="primary" type="submit" class="flex-1">Translate</button>
+      </div>
+    </form>
+  
+    @if (translateForm.valid) {
+      <div class="mt-6">
+        <h3 class="text-lg font-semibold">Translation Output:</h3>
+        <mat-form-field appearance="fill" class="w-full">
+          <textarea matInput [value]="translatedText" disabled class="w-full"></textarea>
+        </mat-form-field>
+      </div>
+    }
+  </mat-card>
