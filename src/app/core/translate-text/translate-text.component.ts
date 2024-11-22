@@ -28,33 +28,39 @@ export class TranslateTextComponent {
 
 
   translateForm: FormGroup = this.fb.group({
-    animalText: ['', { vValidators: Validators.required, updateOn: 'submit' }],
-    originalLanguage: [''],
-    translateLanguage: ['']
+    animalText: ['', { validators: Validators.required, updateOn: 'submit' }],
+    originalLanguage: ['detect', Validators.required],
+    translateLanguage: ['', Validators.required]
   });
 
 
   constructor() {
     this.translateForm.get('originalLanguage')?.valueChanges.subscribe((selectedLanguage) => {
+     
       this.updateTranslationLanguages(selectedLanguage);
+      
     });
   }
 
   updateTranslationLanguages(selectedLanguage: string) {
     // Logic to update available translation languages based on the selected original language
     this.availableTranslationLanguages = this.translationService.getTranslationLanguages(selectedLanguage);
-    this.translateForm.get('translateLanguage')?.setValue('');
+    this.translateForm.get('translateLanguage')?.setValue(this.availableTranslationLanguages[0]);
   }
 
   onTranslate() {
     if (this.translateForm.valid) {
-      this.translatedText = this.translationService.translateText(
-        this.translateForm.value.animalText,
-        this.translateForm.value.originalLanguage,
-        this.translateForm.value.translateLanguage
-      );
+      const animalText = this.translateForm.value.animalText;
+      const translateLanguage = this.translateForm.value.translateLanguage;
+      const originalLanguage = this.translateForm.value.originalLanguage;
+
+      this.translatedText = this.translationService.translateText(animalText, translateLanguage, originalLanguage);
     } else {
       console.log('Form is invalid');
     }
   }
+
+  
+
+  
 }

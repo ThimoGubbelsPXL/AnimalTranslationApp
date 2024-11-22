@@ -4,3 +4,49 @@
 @tailwind utilities;
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.labrador {
+    color: black;
+    font-weight: bold;
+    word-wrap: break-word;
+  }
+  
+  .poedel {
+    color: lightgray;
+    font-size: 0.5em;
+    word-wrap: break-word;
+  }
+  
+  .parkiet {
+    display: inline;
+    flex-wrap: wrap;
+  }
+  
+  .parkiet span {
+    flex: 1 1 10%;
+    font-style: italic;
+  }
+  
+  .papegaai {
+    white-space: pre-line;
+  }
+  
+  .papegaai span {
+    display: inline;
+    padding: 0;
+  }
+  
+  .papegaai span:nth-child(4n+1) {
+    color: red;
+  }
+  
+  .papegaai span:nth-child(4n+2) {
+    color: green;
+  }
+  
+  .papegaai span:nth-child(4n+3) {
+    color: yellow;
+  }
+  
+  .papegaai span:nth-child(4n+4) {
+    color: blue;
+  }
