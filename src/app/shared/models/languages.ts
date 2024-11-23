@@ -5,6 +5,11 @@ export class Mens extends Language {
   constructor() {
     super('Mens', ['Labrador', 'Poedel', 'Parkiet', 'Papegaai'], '');
   }
+  override validateInput(inputText: string): boolean {
+    const words = inputText.split(' ').map(word => word.trim().toLowerCase());
+    const dutchWords = ['de', 'het', 'een', 'en', 'van', 'ik', 'je', 'dat', 'niet', 'op'];
+    return words.some(word => dutchWords.includes(word));
+  }
 }
 
 

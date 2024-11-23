@@ -13,6 +13,11 @@
           Input komt niet overeen met geselecteerde taal
         </mat-error>
         }
+        @if (translateForm.get('animalText')?.hasError('unknownLanguage')) {
+          <mat-error>
+            Taal kon niet automatisch worden herkend
+          </mat-error>
+          }
       
     </mat-form-field>
     
@@ -22,13 +27,15 @@
         <mat-label>van</mat-label>
         <mat-select formControlName="originalLanguage">
           <mat-option value="detect">
-            Taal herkennen
+            {{detectText}}
           </mat-option>
           @for (language of languages; track language) {
           <mat-option [value]="language">
             {{ language }}
           </mat-option>
           }
+          
+          
           
         </mat-select>
       </mat-form-field>

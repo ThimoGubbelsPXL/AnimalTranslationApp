@@ -26,18 +26,21 @@ export class TranslateTextComponent {
   translatedText: string = '';
   languages: string[] = this.translationService.getLanguages();
   availableTranslationLanguages: string[] = [];
-
+  detectText: string = 'Taal herkennen';
 
   translateForm: FormGroup = this.fb.group({
-    animalText: ['', { validators: Validators.required, updateOn: 'submit' }],
+    animalText: ['', { validators: Validators.required }],
     originalLanguage: ['detect', Validators.required],
     translateLanguage: ['', Validators.required]
-  }, { validators: this.languageTextValidator(), updateOn: 'submit' });
+  }, { validators: this.languageTextValidator() });
 
 
   constructor() {
     this.translateForm.get('originalLanguage')?.valueChanges.subscribe((selectedLanguage) => {
       this.updateTranslationLanguages(selectedLanguage);
+    });
+    this.translateForm.get('animalText')?.valueChanges.subscribe(() => {
+      this.detectText = 'Taal herkennen';
     });
     this.updateTranslationLanguages(this.translateForm.value.originalLanguage);
   }
@@ -49,27 +52,40 @@ export class TranslateTextComponent {
   }
 
   onTranslate(): void {
+    let originalLanguage = this.translateForm.value.originalLanguage;
+    if (originalLanguage === 'detect') {
+      originalLanguage = this.handleDetectLanguage(originalLanguage);
+    }
     if (this.translateForm.valid) {
+      const originalLanguage = this.translateForm.value.originalLanguage;
       const animalText = this.translateForm.value.animalText;
       const translateLanguage = this.translateForm.value.translateLanguage;
-      const originalLanguage = this.translateForm.value.originalLanguage;
-
       this.translatedText = this.translationService.translateText(animalText, translateLanguage, originalLanguage);
-    } else {
-      console.log('Form is invalid');
     }
   }
 
-   languageTextValidator(): ValidatorFn {
+  handleDetectLanguage(originalLanguage: string): string | void {
+    // Logic to detect the original language of the input text
+    const animalText = this.translateForm.value.animalText;
+    const detectedLanguage = this.translationService.detectLanguage(animalText);
+    if (detectedLanguage !== "Unknown") {
+      this.detectText= detectedLanguage + ' gedetecteerd';
+      return detectedLanguage;
+    } else {
+      this.translateForm.get('animalText')?.setErrors({ unknownLanguage: true });
+    }
+  }
+
+  languageTextValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const formGroup = control as FormGroup;
       const animalText = formGroup.get('animalText')?.value?.trim();
       const originalLanguage = formGroup.get('originalLanguage')?.value;
-  
+
       if (!animalText || !originalLanguage) {
         return null; // Don't validate if either value is missing
       }
-  
+
       const languageInstance: Language = this.translationService.getLanguageInstance(originalLanguage);
       if (languageInstance && !languageInstance.validateInput(animalText)) {
         this.translateForm.get('animalText')?.setErrors({ invalidLanguageText: true });
@@ -80,7 +96,7 @@ export class TranslateTextComponent {
   }
 
 
-  
 
-  
+
+
 }

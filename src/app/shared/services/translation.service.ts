@@ -73,8 +73,23 @@ export class TranslationService {
     }
   }
 
-  private detectLanguage(animalText: string): string { 
-    //Logic to detect the language of the animal text
-    return 'Mens';
+  detectLanguage(animalText: string): string {
+    const words = animalText.split(' ').map(word => word.trim().toLowerCase());
+
+    // Check for known animal languages
+    for (const language of this.languages) {
+      const validWord = language.translationText.toLowerCase();
+      if (words.every(word => word === validWord)) {
+        return language.name;
+      }
+    }
+
+    // Basic detection for Dutch language
+    const dutchWords = ['de', 'het', 'een', 'en', 'van', 'ik', 'je', 'dat', 'niet', 'op'];
+    if (words.some(word => dutchWords.includes(word))) {
+      return 'Mens';
+    }
+
+    return 'Unknown';
   }
 }
