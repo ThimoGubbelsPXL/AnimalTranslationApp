@@ -17,7 +17,10 @@ export class TranslationService {
   ];
 
   getLanguages(): string[] {
-    return this.languages.map(language => language.name);
+    return this.languages.slice(0,this.languages.length-1).map(language => language.name);
+  }
+  getLanguageInstance(languageName: string): Language {
+    return this.languages.find(language => language.name === languageName) as Language;
   }
 
   getTranslationLanguages(originalLanguage: string): string[] {
@@ -43,7 +46,7 @@ export class TranslationService {
       return 'Language not found';
     } else {
       let text: string = language.translateText(animalText);
-      return this.formatTranslatedText(text, translateLanguage);
+      return language.formatTranslatedText(text);
     }
   }
 

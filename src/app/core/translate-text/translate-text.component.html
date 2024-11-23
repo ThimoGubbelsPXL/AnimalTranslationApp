@@ -1,53 +1,63 @@
 <mat-card class=" max-w-3xl mx-auto mt-10 p-6">
-    <form [formGroup]="translateForm" (ngSubmit)="onTranslate()" class="space-y-4">
-      <mat-form-field appearance="fill" class="w-full">
-        <mat-label>Animal Text</mat-label>
-        <textarea matInput formControlName="animalText" class="w-full"></textarea>
-        @if (translateForm.get('animalText')?.hasError('required')) {
-          <mat-error>
-            Animal text is required.
-          </mat-error>
+  <form [formGroup]="translateForm" (ngSubmit)="onTranslate()" class="space-y-4">
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Text to translate</mat-label>
+      <textarea matInput formControlName="animalText" class="w-full"></textarea>
+      @if (translateForm.get('animalText')?.hasError('required')) {
+      <mat-error>
+        Animal text is required.
+      </mat-error>
+      }
+      @if (translateForm.hasError('invalidLanguageText')) {
+        <mat-error>
+          Input komt niet overeen met geselecteerde taal
+        </mat-error>
         }
-      </mat-form-field>
-  
-      <div class="place-content-stretch place-items-center  grid grid-cols-1 sm:grid-cols-12 sm:gap-4">
-        <mat-form-field appearance="fill" class="w-full col-span-5">
-          <mat-label>van</mat-label>
-          <mat-select formControlName="originalLanguage">
-            <mat-option value="detect">
-                Taal herkennen
-               </mat-option>
-            @for (language of languages; track language) {
-              <mat-option [value]="language">
-                {{ language }}
-              </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-  
-        <mat-form-field appearance="fill" class="w-full col-span-5">
-          <mat-label>naar</mat-label>
-          <mat-select formControlName="translateLanguage">
-           
-            @for (language of availableTranslationLanguages; track language) {
-              <mat-option [value]="language">
-                {{ language }}
-              </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-  
-        <button mat-raised-button color="primary" type="submit" class="w-full col-span-2 ">Translate</button>
-      </div>
-    </form>
-  
- 
-      <div class="mt-6">
-        <h3 class="text-lg font-semibold">Translation Output:</h3>
-        <mat-form-field appearance="fill" class="w-full">
-          <textarea matInput [value]="translatedText" disabled class="w-full"></textarea>
-        </mat-form-field>
-      </div>
-      <div [innerHTML]="translatedText"></div>
+      
+    </mat-form-field>
     
-  </mat-card>
+
+    <div class="place-content-stretch place-items-center  grid grid-cols-1 sm:grid-cols-12 sm:gap-4">
+      <mat-form-field appearance="fill" class="w-full col-span-5">
+        <mat-label>van</mat-label>
+        <mat-select formControlName="originalLanguage">
+          <mat-option value="detect">
+            Taal herkennen
+          </mat-option>
+          @for (language of languages; track language) {
+          <mat-option [value]="language">
+            {{ language }}
+          </mat-option>
+          }
+          
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-full col-span-5">
+        <mat-label>naar</mat-label>
+        <mat-select formControlName="translateLanguage">
+
+          @for (language of availableTranslationLanguages; track language) {
+          <mat-option [value]="language">
+            {{ language }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" class="w-full col-span-2 ">Translate</button>
+    </div>
+  </form>
+
+
+  <div class="mt-6">
+    <h3 class="text-lg font-semibold">Translation Output:</h3>
+    <mat-card >
+      <mat-card-content [innerHTML]="translatedText">
+
+        </mat-card-content>
+    </mat-card>
+  </div>
+
+
+</mat-card>

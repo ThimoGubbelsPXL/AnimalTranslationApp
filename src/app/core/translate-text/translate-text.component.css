@@ -1,46 +1,57 @@
-.labrador {
+
+
+
+:host  ::ng-deep .labrador {
     color: black;
     font-weight: bold;
+    font-size: 1em;
     word-wrap: break-word;
   }
   
-  .poedel {
+  :host  ::ng-deep .poedel {
     color: lightgray;
     font-size: 0.5em;
     word-wrap: break-word;
   }
   
-  .parkiet {
-    display: flex;
+  :host  ::ng-deep .parkiet {
+    display: inline;
     flex-wrap: wrap;
   }
   
-  .parkiet span {
-    flex: 1 1 10%;
+  :host  ::ng-deep .parkiet span {
     font-style: italic;
   }
   
-  .papegaai {
+
+  
+  /* Below tablet size, fill the line */
+  @media (max-width: 767px) {
+  
+    :host  ::ng-deep  .parkiet br{
+      display: none !important;
+    }
+  
+  }
+  
+  :host  ::ng-deep .papegaai {
     white-space: pre-line;
   }
   
-  .papegaai span {
-    display: inline-block;
-    width: 100px;
-  }
   
-  .papegaai span:nth-child(4n+1) {
+  
+  :host  ::ng-deep .papegaai span:nth-child(4n+1) {
     color: red;
   }
   
-  .papegaai span:nth-child(4n+2) {
+  :host  ::ng-deep .papegaai span:nth-child(4n+2) {
     color: green;
   }
   
-  .papegaai span:nth-child(4n+3) {
+  :host  ::ng-deep .papegaai span:nth-child(4n+3) {
     color: yellow;
   }
   
-  .papegaai span:nth-child(4n+4) {
+  :host  ::ng-deep .papegaai span:nth-child(4n+4) {
     color: blue;
   }
