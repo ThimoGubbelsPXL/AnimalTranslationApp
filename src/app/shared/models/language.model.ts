@@ -11,7 +11,15 @@ export abstract class Language {
   }
 
   translateText(animalText: string): string {
-    return animalText.split(' ').map(() => this.translationText).join(' ');
+    return animalText.split(/(\s+|\b|[.,!?])/).map(word => {
+      if (word.trim() === '') {
+        return word; // Preserve whitespace
+      } else if (/[.,!?]/.test(word)) {
+        return word; // Preserve punctuation
+      } else {
+        return this.translationText;
+      }
+    }).join('');
   }
   formatTranslatedText(translatedText: string): string {
     return `<span class="${this.name.toLowerCase()}">${translatedText}</span>`;

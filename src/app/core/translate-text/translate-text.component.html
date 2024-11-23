@@ -43,12 +43,15 @@
       <mat-form-field appearance="fill" class="w-full col-span-5">
         <mat-label>naar</mat-label>
         <mat-select formControlName="translateLanguage">
-
+          
           @for (language of availableTranslationLanguages; track language) {
           <mat-option [value]="language">
             {{ language }}
           </mat-option>
           }
+         
+            <mat-checkbox formControlName="drunkMode">Ik ben zo dronken!!</mat-checkbox>
+          
         </mat-select>
       </mat-form-field>
 

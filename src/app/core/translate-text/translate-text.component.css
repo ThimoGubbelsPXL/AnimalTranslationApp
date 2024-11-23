@@ -4,13 +4,13 @@
 :host  ::ng-deep .labrador {
     color: black;
     font-weight: bold;
-    font-size: 1em;
+    font-size: 1.5em;
     word-wrap: break-word;
   }
   
   :host  ::ng-deep .poedel {
-    color: lightgray;
-    font-size: 0.5em;
+    color: grey;
+    font-size: 1em;
     word-wrap: break-word;
   }
   

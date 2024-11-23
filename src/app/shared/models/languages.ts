@@ -35,9 +35,17 @@ export class Parkiet extends Language {
 
   override translateText(text: string): string {
     const vowels = ['a', 'e', 'i', 'o', 'u'];
-    return text.split(' ').map(word => {
-      return vowels.includes(word.toLowerCase()) ? 'tjilp' : 'piep';
-    }).join(' ');
+    return text.split(/(\s+|\b)/).map(word => {
+      if (vowels.includes(word.toLowerCase())) {
+        return 'tjilp';
+      } else if (word.trim() === '') {
+        return word; // Preserve whitespace
+      } else if (/[.,!?]/.test(word)) {
+        return word; // Preserve punctuation
+      } else {
+        return 'piep';
+      }
+    }).join('');
   }
 
   override formatTranslatedText(translatedText: string): string {

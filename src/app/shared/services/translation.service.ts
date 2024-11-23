@@ -33,11 +33,10 @@ export class TranslationService {
     return language ? language.translationLanguages : [];
   }
 
-  translateText(animalText: string, translateLanguage: string, originalLanguage: string): string {
+  translateText(animalText: string, translateLanguage: string, originalLanguage: string, drunkMode:boolean): string {
     if(originalLanguage === 'detect') {
       originalLanguage = this.detectLanguage(animalText);
     }
-
     if (this.checkIfTranslationIsPossible(translateLanguage, originalLanguage)) {
       return 'Translation not possible';
     }
@@ -46,6 +45,7 @@ export class TranslationService {
       return 'Language not found';
     } else {
       let text: string = language.translateText(animalText);
+      text = drunkMode ? this.drunkTranslate(text) : text;
       return language.formatTranslatedText(text);
     }
   }
@@ -55,36 +55,19 @@ export class TranslationService {
     return language?.translationLanguages.find(lang => lang === translateLanguage) === undefined;
   }
 
-  private formatTranslatedText(translatedText: string, translateLanguage: string): string {
-    switch (translateLanguage) {
-      case 'Labrador':
-        return `<span class="labrador">${translatedText}</span>`;
-      case 'Poedel':
-        return `<span class="poedel">${translatedText}</span>`;
-      case 'Parkiet':
-        return `<span class="parkiet">${translatedText.split(' ').map(word => `<span>${word}</span>`).join(' ')}</span>`;
-      case 'Papegaai':
-        return `<span class="papegaai">${translatedText.split(' ').map((word, index) => {
-          const colors = ['red', 'green', 'yellow', 'blue'];
-          return `<span style="color: ${colors[index % 4]}">${word}&nbsp;</span>`;
-        }).join(' ')}</span>`;
-      default:
-        return translatedText;
-    }
-  }
 
   detectLanguage(animalText: string): string {
     const words = animalText.split(' ').map(word => word.trim().toLowerCase());
-
-    // Check for known animal languages
-    for (const language of this.languages) {
+    let translatableLanguages = this.languages.slice(0,this.languages.length-1)
+    // Detection for animal languages that can be translated
+    for (const language of translatableLanguages) {
       const validWord = language.translationText.toLowerCase();
       if (words.every(word => word === validWord)) {
         return language.name;
       }
     }
 
-    // Basic detection for Dutch language
+    // Basic detection for Dutch
     const dutchWords = ['de', 'het', 'een', 'en', 'van', 'ik', 'je', 'dat', 'niet', 'op'];
     if (words.some(word => dutchWords.includes(word))) {
       return 'Mens';
@@ -92,4 +75,22 @@ export class TranslationService {
 
     return 'Unknown';
   }
+
+  drunkTranslate(text: string): string {
+    const sentences = text.split(/(?<=[.!?])\s+/);
+    const drunkSentences = sentences.map(sentence => {
+      const words = sentence.split(' ');
+      const drunkWords = words.map((word, index) => {
+        if ((index + 1) % 4 === 0) {
+          return word.split('').reverse().join('');
+        }
+        return word;
+      });
+      return drunkWords.join(' ');
+    });
+
+    const drunkText = drunkSentences.join(' Proost! ');
+    return `${drunkText} Burp!`;
+  }
+
 }

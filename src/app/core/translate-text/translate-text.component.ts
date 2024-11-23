@@ -8,12 +8,13 @@ import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
 import { TranslationService } from '../../shared/services/translation.service';
 import { Language } from '../../shared/models/language.model';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 
 @Component({
   selector: 'app-translate-text',
   standalone: true,
-  imports: [ReactiveFormsModule, MatFormField, MatCardContent, MatCard, MatLabel, MatInput, MatError, MatOption, MatSelect, MatButtonModule,
+  imports: [ReactiveFormsModule, MatFormField,MatCheckbox, MatCardContent, MatCard, MatLabel, MatInput, MatError, MatOption, MatSelect, MatButtonModule,
 
   ],
   templateUrl: './translate-text.component.html',
@@ -31,7 +32,8 @@ export class TranslateTextComponent {
   translateForm: FormGroup = this.fb.group({
     animalText: ['', { validators: Validators.required }],
     originalLanguage: ['detect', Validators.required],
-    translateLanguage: ['', Validators.required]
+    translateLanguage: ['', Validators.required],
+    drunkMode: [false]
   }, { validators: this.languageTextValidator() });
 
 
@@ -60,7 +62,8 @@ export class TranslateTextComponent {
       const originalLanguage = this.translateForm.value.originalLanguage;
       const animalText = this.translateForm.value.animalText;
       const translateLanguage = this.translateForm.value.translateLanguage;
-      this.translatedText = this.translationService.translateText(animalText, translateLanguage, originalLanguage);
+      const drunkMode = this.translateForm.value.drunkMode;
+      this.translatedText = this.translationService.translateText(animalText, translateLanguage, originalLanguage, drunkMode);
     }
   }
 
