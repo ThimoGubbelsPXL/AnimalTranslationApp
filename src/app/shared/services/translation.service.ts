@@ -8,7 +8,7 @@ import { Mens, Labrador, Poedel, Parkiet, Papegaai } from '../models/languages';
   providedIn: 'root'
 })
 export class TranslationService {
-  private languages: Language[] = [
+  languages: Language[] = [
     new Mens(),
     new Labrador(),
     new Poedel(),
@@ -17,7 +17,7 @@ export class TranslationService {
   ];
 
   getLanguages(): string[] {
-    return this.languages.slice(0,this.languages.length-1).map(language => language.name);
+    return this.languages.slice(0, this.languages.length - 1).map(language => language.name);
   }
   getLanguageInstance(languageName: string): Language {
     return this.languages.find(language => language.name === languageName) as Language;
@@ -25,7 +25,7 @@ export class TranslationService {
 
   getTranslationLanguages(originalLanguage: string): string[] {
     //Only show languages that are translatable to
-    if(originalLanguage === 'detect') {
+    if (originalLanguage === 'detect') {
       return this.languages.slice(1, this.languages.length).map(language => language.name);
     }
     //Find the language object that matches the original language
@@ -33,24 +33,24 @@ export class TranslationService {
     return language ? language.translationLanguages : [];
   }
 
-  translateText(animalText: string, translateLanguage: string, originalLanguage: string, drunkMode:boolean): string {
-    if(originalLanguage === 'detect') {
+  translateText(animalText: string, translateLanguage: string, originalLanguage: string, drunkMode: boolean): string {
+    if (originalLanguage === 'detect') {
       originalLanguage = this.detectLanguage(animalText);
-    }
-    if (this.checkIfTranslationIsPossible(translateLanguage, originalLanguage)) {
-      return 'Translation not possible';
     }
     let language = this.languages.find(lang => lang.name === translateLanguage);
     if (language === undefined) {
       return 'Language not found';
     } else {
+      if (this.checkIfTranslationIsPossible(translateLanguage, originalLanguage)) {
+        return 'Translation not possible';
+      }
       let text: string = language.translateText(animalText);
       text = drunkMode ? this.drunkTranslate(text) : text;
       return language.formatTranslatedText(text);
     }
   }
 
-  private checkIfTranslationIsPossible(translateLanguage: string, originalLanguage: string): boolean {
+  checkIfTranslationIsPossible(translateLanguage: string, originalLanguage: string): boolean {
     let language = this.languages.find(lang => lang.name === originalLanguage);
     return language?.translationLanguages.find(lang => lang === translateLanguage) === undefined;
   }
@@ -58,7 +58,7 @@ export class TranslationService {
 
   detectLanguage(animalText: string): string {
     const words = animalText.split(' ').map(word => word.trim().toLowerCase());
-    let translatableLanguages = this.languages.slice(0,this.languages.length-1)
+    let translatableLanguages = this.languages.slice(0, this.languages.length - 1)
     // Detection for animal languages that can be translated
     for (const language of translatableLanguages) {
       const validWord = language.translationText.toLowerCase();
