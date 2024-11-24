@@ -56,6 +56,7 @@ export class TranslateTextComponent {
   }
 
   onTranslate(): void {
+    this.translatedText = '';
     let originalLanguage = this.translateForm.value.originalLanguage;
     if (originalLanguage === 'detect') {
       originalLanguage = this.handleDetectLanguage(originalLanguage);
