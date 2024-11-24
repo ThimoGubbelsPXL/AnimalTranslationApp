@@ -1,11 +1,12 @@
 import { Component, Pipe, PipeTransform } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateTextComponent } from "./core/translate-text/translate-text.component";
+import { NavbarComponent } from './core/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, TranslateTextComponent],
+  imports: [RouterOutlet, NavbarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

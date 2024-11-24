@@ -14,9 +14,8 @@ import { MatCheckbox } from '@angular/material/checkbox';
 @Component({
   selector: 'app-translate-text',
   standalone: true,
-  imports: [ReactiveFormsModule, MatFormField,MatCheckbox, MatCardContent, MatCard, MatLabel, MatInput, MatError, MatOption, MatSelect, MatButtonModule,
-
-  ],
+  imports: [ReactiveFormsModule, MatFormField, MatCheckbox, MatCardContent, MatCard,
+    MatLabel, MatInput, MatError, MatOption, MatSelect, MatButtonModule],
   templateUrl: './translate-text.component.html',
   styleUrls: ['./translate-text.component.css']
 })
@@ -38,12 +37,15 @@ export class TranslateTextComponent {
 
 
   constructor() {
+    // Subscribe to form changes to update available translation languages
     this.translateForm.get('originalLanguage')?.valueChanges.subscribe((selectedLanguage) => {
       this.updateTranslationLanguages(selectedLanguage);
     });
+    // Subscribe to animal text changes to reset detect text
     this.translateForm.get('animalText')?.valueChanges.subscribe(() => {
       this.detectText = 'Taal herkennen';
     });
+    // Set initial translation languages
     this.updateTranslationLanguages(this.translateForm.value.originalLanguage);
   }
 
@@ -59,7 +61,6 @@ export class TranslateTextComponent {
       originalLanguage = this.handleDetectLanguage(originalLanguage);
     }
     if (this.translateForm.valid) {
-      const originalLanguage = this.translateForm.value.originalLanguage;
       const animalText = this.translateForm.value.animalText;
       const translateLanguage = this.translateForm.value.translateLanguage;
       const drunkMode = this.translateForm.value.drunkMode;
@@ -70,9 +71,10 @@ export class TranslateTextComponent {
   handleDetectLanguage(originalLanguage: string): string | void {
     // Logic to detect the original language of the input text
     const animalText = this.translateForm.value.animalText;
+    if(!animalText) {return;}
     const detectedLanguage = this.translationService.detectLanguage(animalText);
     if (detectedLanguage !== "Unknown") {
-      this.detectText= detectedLanguage + ' gedetecteerd';
+      this.detectText = detectedLanguage + ' gedetecteerd';
       return detectedLanguage;
     } else {
       this.translateForm.get('animalText')?.setErrors({ unknownLanguage: true });

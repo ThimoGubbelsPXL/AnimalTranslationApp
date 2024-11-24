@@ -1,11 +1,11 @@
 <mat-card class=" max-w-3xl mx-auto mt-10 p-6">
   <form [formGroup]="translateForm" (ngSubmit)="onTranslate()" class="space-y-4">
     <mat-form-field appearance="fill" class="w-full">
-      <mat-label>Text to translate</mat-label>
+      <mat-label>Te vertalen tekst</mat-label>
       <textarea matInput formControlName="animalText" class="w-full"></textarea>
       @if (translateForm.get('animalText')?.hasError('required')) {
       <mat-error>
-        Animal text is required.
+        Te vertalen tekst verwacht.
       </mat-error>
       }
       @if (translateForm.hasError('invalidLanguageText')) {
@@ -55,13 +55,13 @@
         </mat-select>
       </mat-form-field>
 
-      <button mat-raised-button color="primary" type="submit" class="w-full col-span-2 ">Translate</button>
+      <button mat-raised-button color="primary" type="submit" class="w-full col-span-2 ">Vertaal</button>
     </div>
   </form>
 
 
   <div class="mt-6">
-    <h3 class="text-lg font-semibold">Translation Output:</h3>
+    <h3 class="text-lg font-semibold">Vertaling:</h3>
     <mat-card >
       <mat-card-content [innerHTML]="translatedText">
 

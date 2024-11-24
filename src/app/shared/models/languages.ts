@@ -30,7 +30,7 @@ export class Poedel extends Language {
 
 export class Parkiet extends Language {
   constructor() {
-    super('Parkiet', ['Papegaai', 'Labrador'], '');
+    super('Parkiet', ['Papegaai'], '');
   }
 
   override translateText(text: string): string {

@@ -72,7 +72,6 @@ export class TranslationService {
     if (words.some(word => dutchWords.includes(word))) {
       return 'Mens';
     }
-
     return 'Unknown';
   }
 

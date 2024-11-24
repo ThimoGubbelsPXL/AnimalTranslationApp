@@ -8,15 +8,13 @@ describe('TranslationService', () => {
   let mockLanguage: jasmine.SpyObj<Language>;
 
   beforeEach(() => {
-    mockLanguage = jasmine.createSpyObj('Language', ['translateText', 'validateInput', 'formatTranslatedText']);
-    mockLanguage.name = 'Mens';
-    mockLanguage.translationLanguages = ['Papegaai'];
+
   
 
     TestBed.configureTestingModule({
       providers: [
         TranslationService,
-        { provide: Language, useValue: mockLanguage }
+
       ]
     });
     service = TestBed.inject(TranslationService);
